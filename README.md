@@ -26,18 +26,30 @@ Original:
  - Git clone https://github.com/alexandremendoncaalvaro/orbslam-visualstudio.git
  - Compilar /Thirdparty/DBoW2
 	 - Gerar os arquivos do Visual Studio pelo cMake*
-	 	- Em “CMAKE_INSTALL_PREFIX” insira o caminho da pasta build/install
+	 	- Em “CMAKE_INSTALL_PREFIX” insira o caminho da pasta /Thirdparty/DBoW2
 	 - Compilar lib no Visual Studio*
 	 	- Vai dar vários Warnings mas não pode dar erro
- - Compilar /Thirdparty/eigen
-	 - Gerar os arquivos do Visual Studio pelo cMake*
-	 - Compilar arquivos gerados em modo release
-	 	- `cmake.exe --build . --config Release --target INSTALL`
  - Compilar /Thirdparty/g2o
 	 - Gerar os arquivos do Visual Studio pelo cMake*
-		 - Em “CMAKE_INSTALL_PREFIX” insira o caminho da pasta build/install
+		 - Em “CMAKE_INSTALL_PREFIX” insira o caminho da pasta /Thirdparty/g2o
 		 - Em “EIGEN3_INCLUDE_DIR” e “G2O_EIGEN3_INCLUDE” insira o caminho da pasta /Thirdparty/eigen
 	 - Compilar lib no Visual Studio*
+		 - Em C/C++ -> Preprocessor adicionar uma linha com WINDOWS (sem underline)
+ - Compilar /Thirdparty/pangolin
+	 - Gerar os arquivos do Visual Studio pelo cMake*
+		 - Mesmo que fique muitos itens em vermelho, se aparecer Configuring Done tá tudo certo
+	 - Compilar lib no Visual Studio*
+		 - pode ignorar a falha no testlog, mas os outros 18 tem que dar certo
+- Compilar orbslam-visualstudio
+	 - Gerar os arquivos do Visual Studio pelo cMake*
+	 - Compilar lib no Visual Studio*
+		 - Não compile o ALL_BUILD, apenas o ORB_SLAM2 (pelo menos inicialmente)
+	 - Compilar exemplos no Visual Studio*
+		 - para cada exemplo em Properties -> C/C++ -> Code Generation: RuntimeLibrary para Multi-threaded (/MT)
+
+**FEITO!**
+Só testar os exemplos! E modificar o que quiser para uso próprio!
+
 
 **GERAR ARQUIVOS DO VISUAL STUDIO PELO CMAKE***
  - Criar uma pasta build na raiz do que será usado como fonte
