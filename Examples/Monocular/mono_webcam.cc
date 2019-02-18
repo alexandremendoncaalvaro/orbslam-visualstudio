@@ -38,6 +38,7 @@ int main(int argc, char **argv)
 {
 	string vocabPath = "../ORBvoc.txt";
 	string settingsPath = "../webcam.yaml";
+	string videoPath = "../video.avi";
 	if (argc == 1)
 	{
 
@@ -51,9 +52,15 @@ int main(int argc, char **argv)
 		vocabPath = argv[1];
 		settingsPath = argv[2];
 	}
+	else if (argc == 4)
+	{
+		vocabPath = argv[1];
+		settingsPath = argv[2];
+		videoPath = argv[3];
+	}
     else
     {
-        cerr << endl << "Usage: mono_webcam.exe path_to_vocabulary path_to_settings" << endl;
+        cerr << endl << "Usage: mono_webcam.exe path_to_vocabulary path_to_settings path_to_video" << endl;
         return 1;
     }
 
@@ -63,7 +70,7 @@ int main(int argc, char **argv)
     cout << endl << "-------" << endl;
     cout << "Start processing sequence ..." << endl;
 
-	cv::VideoCapture cap(0);
+	cv::VideoCapture cap(videoPath);
 
 
 	// From http://stackoverflow.com/questions/19555121/how-to-get-current-timestamp-in-milliseconds-since-1970-just-the-way-java-gets
@@ -82,24 +89,8 @@ int main(int argc, char **argv)
 		// Pass the image to the SLAM system
 		Tcw = SLAM.TrackMonocular(im, curNow / 1000.0);
 
-		/* This can write each image with its position to a file if you want
-		if (!Tcw.empty())
-		{
-			cv::Mat Rwc = Tcw.rowRange(0, 3).colRange(0, 3).t();
-			cv::Mat twc = -Rwc*Tcw.rowRange(0, 3).col(3);
-			std::ostringstream stream;
-			//stream << "imgs/" << Rwc.at<float>(0, 0) << " " << Rwc.at<float>(0, 1) << " " << Rwc.at<float>(0, 2) << " " << twc.at<float>(0) << " " <<
-			//	Rwc.at<float>(1, 0) << " " << Rwc.at<float>(1, 1) << " " << Rwc.at<float>(1, 2) << " " << twc.at<float>(1) << " " <<
-				//Rwc.at<float>(2, 0) << " " << Rwc.at<float>(2, 1) << " " << Rwc.at<float>(2, 2) << " " << twc.at<float>(2) << ".jpg";
-			stream << "imgs/" << curNow << ".jpg";
-			string fileName = stream.str();
-			cv::imwrite(fileName, im);
-		}
-		*/
-
 		// This will make a third window with the color images, you need to click on this then press any key to quit
 		cv::imshow("Image", im);
-
 
 		if (cv::waitKey(1) >= 0)
 			break;
